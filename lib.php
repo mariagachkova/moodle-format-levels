@@ -22,21 +22,23 @@
  */
 
 defined('MOODLE_INTERNAL') || die();
-require_once($CFG->dirroot. '/course/format/lib.php');
+require_once($CFG->dirroot . '/course/format/lib.php');
 
 /**
  * Main class for the Levels course format
  *
  * @package    format_levels
  */
-class format_levels extends format_base {
+class format_levels extends format_base
+{
 
     /**
      * Returns true if this course format uses sections
      *
      * @return bool
      */
-    public function uses_sections() {
+    public function uses_sections()
+    {
         return true;
     }
 
@@ -48,11 +50,12 @@ class format_levels extends format_base {
      * @param int|stdClass $section Section object from database or just field section.section
      * @return string Display name that the course format prefers, e.g. "Level 2"
      */
-    public function get_section_name($section) {
+    public function get_section_name($section)
+    {
         $section = $this->get_section($section);
         if ((string)$section->name !== '') {
             return format_string($section->name, true,
-                    array('context' => context_course::instance($this->courseid)));
+                array('context' => context_course::instance($this->courseid)));
         } else {
             return $this->get_default_section_name($section);
         }
@@ -68,7 +71,8 @@ class format_levels extends format_base {
      * @param stdClass $section Section object from database or just field course_sections section
      * @return string The default value for the section name.
      */
-    public function get_default_section_name($section) {
+    public function get_default_section_name($section)
+    {
         if ($section->section == 0) {
             // Return the general section.
             return get_string('section0name', 'format_levels');
@@ -89,7 +93,8 @@ class format_levels extends format_base {
      *     'sr' (int) used by multipage formats to specify to which section to return
      * @return null|moodle_url
      */
-    public function get_view_url($section, $options = array()) {
+    public function get_view_url($section, $options = array())
+    {
         global $CFG;
         $course = $this->get_course();
         $url = new moodle_url('/course/view.php', array('id' => $course->id));
@@ -120,7 +125,7 @@ class format_levels extends format_base {
                 if (empty($CFG->linkcoursesections) && !empty($options['navigation'])) {
                     return null;
                 }
-                $url->set_anchor('section-'.$sectionno);
+                $url->set_anchor('section-' . $sectionno);
             }
         }
         return $url;
@@ -134,7 +139,8 @@ class format_levels extends format_base {
      *
      * @return stdClass
      */
-    public function supports_ajax() {
+    public function supports_ajax()
+    {
         $ajaxsupport = new stdClass();
         $ajaxsupport->capable = true;
         return $ajaxsupport;
@@ -146,13 +152,14 @@ class format_levels extends format_base {
      * @param global_navigation $navigation
      * @param navigation_node $node The course node within the navigation
      */
-    public function extend_course_navigation($navigation, navigation_node $node) {
+    public function extend_course_navigation($navigation, navigation_node $node)
+    {
         global $PAGE;
         // if section is specified in course/view.php, make sure it is expanded in navigation
         if ($navigation->includesectionnum === false) {
             $selectedsection = optional_param('section', null, PARAM_INT);
             if ($selectedsection !== null && (!defined('AJAX_SCRIPT') || AJAX_SCRIPT == '0') &&
-                    $PAGE->url->compare(new moodle_url('/course/view.php'), URL_MATCH_BASE)) {
+                $PAGE->url->compare(new moodle_url('/course/view.php'), URL_MATCH_BASE)) {
                 $navigation->includesectionnum = $selectedsection;
             }
         }
@@ -181,7 +188,8 @@ class format_levels extends format_base {
      *
      * @return array This will be passed in ajax respose
      */
-    function ajax_section_move() {
+    function ajax_section_move()
+    {
         global $PAGE;
         $titles = array();
         $course = $this->get_course();
@@ -201,7 +209,8 @@ class format_levels extends format_base {
      * @return array of default blocks, must contain two keys BLOCK_POS_LEFT and BLOCK_POS_RIGHT
      *     each of values is an array of block names (for left and right side columns)
      */
-    public function get_default_blocks() {
+    public function get_default_blocks()
+    {
         return array(
             BLOCK_POS_LEFT => array(),
             BLOCK_POS_RIGHT => array()
@@ -218,7 +227,8 @@ class format_levels extends format_base {
      * @param bool $foreditform
      * @return array of options
      */
-    public function course_format_options($foreditform = false) {
+    public function course_format_options($foreditform = false)
+    {
         static $courseformatoptions = false;
         if ($courseformatoptions === false) {
             $courseconfig = get_config('moodlecourse');
@@ -226,15 +236,13 @@ class format_levels extends format_base {
                 'default' => $courseconfig->numsections,
                 'type' => PARAM_INT,
             );
-            $courseformatoptions = array(
-                'hiddensections' => array(
-                    'default' => $courseconfig->hiddensections,
-                    'type' => PARAM_INT,
-                ),
-                'coursedisplay' => array(
-                    'default' => $courseconfig->coursedisplay,
-                    'type' => PARAM_INT,
-                ),
+            $courseformatoptions['hiddensections'] = array(
+                'default' => $courseconfig->hiddensections,
+                'type' => PARAM_INT,
+            );
+            $courseformatoptions['coursedisplay'] = array(
+                'default' => $courseconfig->coursedisplay,
+                'type' => PARAM_INT,
             );
             $courseformatoptions['showdefaultsectionname'] = array(
                 'default' => get_config('format_levels', 'showdefaultsectionname'),
@@ -280,31 +288,29 @@ class format_levels extends format_base {
                 'element_type' => 'select',
                 'element_attributes' => array($sectionmenu),
             );
-            $courseformatoptionsedit = array(
-                'hiddensections' => array(
-                    'label' => new lang_string('hiddensections'),
-                    'help' => 'hiddensections',
-                    'help_component' => 'moodle',
-                    'element_type' => 'select',
-                    'element_attributes' => array(
-                        array(
-                            0 => new lang_string('hiddensectionscollapsed'),
-                            1 => new lang_string('hiddensectionsinvisible')
-                        )
-                    ),
+            $courseformatoptionsedit['hiddensections'] = array(
+                'label' => new lang_string('hiddensections'),
+                'help' => 'hiddensections',
+                'help_component' => 'moodle',
+                'element_type' => 'select',
+                'element_attributes' => array(
+                    array(
+                        0 => new lang_string('hiddensectionscollapsed'),
+                        1 => new lang_string('hiddensectionsinvisible')
+                    )
                 ),
-                'coursedisplay' => array(
-                    'label' => new lang_string('coursedisplay'),
-                    'element_type' => 'select',
-                    'element_attributes' => array(
-                        array(
-                            COURSE_DISPLAY_SINGLEPAGE => new lang_string('coursedisplay_single'),
-                            COURSE_DISPLAY_MULTIPAGE => new lang_string('coursedisplay_multi')
-                        )
-                    ),
-                    'help' => 'coursedisplay',
-                    'help_component' => 'moodle',
-                )
+            );
+            $courseformatoptionsedit['coursedisplay'] = array(
+                'label' => new lang_string('coursedisplay'),
+                'element_type' => 'select',
+                'element_attributes' => array(
+                    array(
+                        COURSE_DISPLAY_SINGLEPAGE => new lang_string('coursedisplay_single'),
+                        COURSE_DISPLAY_MULTIPAGE => new lang_string('coursedisplay_multi')
+                    )
+                ),
+                'help' => 'coursedisplay',
+                'help_component' => 'moodle',
             );
             $courseformatoptionsedit['showdefaultsectionname'] = array(
                 'label' => get_string('showdefaultsectionname', 'format_levels'),
@@ -368,7 +374,8 @@ class format_levels extends format_base {
      * @param bool $forsection 'true' if this is a section edit form, 'false' if this is course edit form.
      * @return array array of references to the added form elements.
      */
-    public function create_edit_form_elements(&$mform, $forsection = false) {
+    public function create_edit_form_elements(&$mform, $forsection = false)
+    {
         global $COURSE;
         $elements = parent::create_edit_form_elements($mform, $forsection);
 
@@ -401,7 +408,8 @@ class format_levels extends format_base {
      *     this object contains information about the course before update
      * @return bool whether there were any changes to the options values
      */
-    public function update_course_format_options($data, $oldcourse = null) {
+    public function update_course_format_options($data, $oldcourse = null)
+    {
         $data = (array)$data;
         if ($oldcourse !== null) {
             $oldcourse = (array)$oldcourse;
@@ -425,7 +433,8 @@ class format_levels extends format_base {
      * @param int|stdClass|section_info $section
      * @return bool
      */
-    public function can_delete_section($section) {
+    public function can_delete_section($section)
+    {
         return true;
     }
 
@@ -440,7 +449,8 @@ class format_levels extends format_base {
      * @return \core\output\inplace_editable
      */
     public function inplace_editable_render_section_name($section, $linkifneeded = true,
-                                                         $editable = null, $edithint = null, $editlabel = null) {
+                                                         $editable = null, $edithint = null, $editlabel = null)
+    {
         if (empty($edithint)) {
             $edithint = new lang_string('editsectionname', 'format_levels');
         }
@@ -456,7 +466,8 @@ class format_levels extends format_base {
      *
      * @return bool
      */
-    public function supports_news() {
+    public function supports_news()
+    {
         return true;
     }
 
@@ -468,12 +479,14 @@ class format_levels extends format_base {
      * @param stdClass|section_info $section section where this module is located or will be added to
      * @return bool
      */
-    public function allow_stealth_module_visibility($cm, $section) {
+    public function allow_stealth_module_visibility($cm, $section)
+    {
         // Allow the third visibility state inside visible sections or in section 0.
         return !$section->section || $section->visible;
     }
 
-    public function section_action($section, $action, $sr) {
+    public function section_action($section, $action, $sr)
+    {
         global $PAGE;
 
         if ($section->section && ($action === 'setmarker' || $action === 'removemarker')) {
@@ -496,7 +509,8 @@ class format_levels extends format_base {
      * @return array the list of configuration settings
      * @since Moodle 3.5
      */
-    public function get_config_for_external() {
+    public function get_config_for_external()
+    {
         // Return everything (nothing to hide).
         return $this->get_format_options();
     }
@@ -510,7 +524,8 @@ class format_levels extends format_base {
  * @param mixed $newvalue
  * @return \core\output\inplace_editable
  */
-function format_levels_inplace_editable($itemtype, $itemid, $newvalue) {
+function format_levels_inplace_editable($itemtype, $itemid, $newvalue)
+{
     global $DB, $CFG;
     require_once($CFG->dirroot . '/course/lib.php');
     if ($itemtype === 'sectionname' || $itemtype === 'sectionnamenl') {
