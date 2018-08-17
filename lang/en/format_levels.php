@@ -42,11 +42,11 @@ $string['yes'] = 'Yes';
 $string['no'] = 'No';
 $string['sectionposition'] = 'Section zero position';
 $string['sectionposition_help'] = 'The section 0 will appear together the visible section.<br><br>
-<strong>Above the list buttons</strong><br>Use this option if you want to add some text or resource before the buttons list.
+<strong>Above the list levels</strong><br>Use this option if you want to add some text or resource before the levels list.
 <i>Example: Define a picture to illustrate the course.</i><br><br><strong>Below the visible section</strong><br>
 Use this option if you want to add some text or resource after the visible section.
 <i>Example: Resources or links to be displayed regardless of the visible section.</i><br><br>';
-$string['above'] = 'Above the list buttons';
+$string['above'] = 'Above the list levels';
 $string['below'] = 'Below the visible section';
 $string['colorhighlight'] = 'Color of the highlight level';
 $string['colorhighlight_help'] = 'The current level is the section marked with highlight.<br>Define a color in hexadecimal.
@@ -54,7 +54,7 @@ $string['colorhighlight_help'] = 'The current level is the section marked with h
 $string['colorcurrent'] = 'Color of the current level';
 $string['colorcurrent_help'] = 'The current level is the selected section.<br>Define a color in hexadecimal.
 <i>Example: #747fab</i><br>If you want to use the default color, leave empty.';
-$string['editing'] = 'The buttons are disabled while the edit mode is active.';
+$string['editing'] = 'The levels are disabled while the edit mode is active.';
 $string['sectiontype'] = 'List style';
 $string['numeric'] = 'Numeric';
 $string['roman'] = 'Roman numerals';

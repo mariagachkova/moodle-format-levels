@@ -338,7 +338,7 @@ class format_levels extends format_base
             );
             $courseformatoptionsedit['sectiontype'] = array(
                 'label' => get_string('sectiontype', 'format_levels'),
-                'help_component' => 'format_buttons',
+                'help_component' => 'format_levels',
                 'element_type' => 'select',
                 'element_attributes' => array(
                     array(

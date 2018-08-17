@@ -1,34 +1,137 @@
-.course-content ul.levels {
-    margin: 0;
+/*
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * format_levels_renderer
+ *
+ * @package    format_levels
+ */
+
+.course-content ul.levels li.section.main {
+    background: none;
     list-style: none;
+    display: none;
+    border-left: 0;
+    border-right: 0;
 }
 
-.course-content ul.levels li.section .content {
-    margin: 0 40px;
+.course-content ul.levels span.above li.section {
+    border: 0;
+    display: block;
+    margin-bottom: 30px;
+    padding-bottom: 0;
 }
 
-.course-content ul.levels li.section .left,
-.course-content ul.levels li.section .right {
-    width: 40px;
-    padding: 0 6px;
+.course-content ul.levels span.below li.section {
+    border: 0;
+    display: block;
+    margin-top: 35px;
 }
 
-.course-content ul.levels li.section .left {
-    padding-top: 22px;
-    text-align: right;
+.course-content ul.levels .content ul.section {
+    margin: 1em 0;
 }
 
-.jsenabled .course-content ul.levels li.section .left,
-.jsenabled .course-content ul.levels li.section .right {
-    width: auto;
+#levelsectioncontainer {
+    display: none;
+    margin: 20px auto;
 }
 
-.course-content ul.levels li.section .left .section-handle img.icon {
+#levelsectioncontainer .levelsection {
+    background: #dee3e8;
+    color: #7a8188;
+    display: inline-block;
+    text-align: center;
+    width: 52px;
+    line-height: 52px;
+    height: 52px;
+    overflow: hidden;
+    cursor: pointer;
+    font-size: 22px;
     padding: 0;
-    vertical-align: baseline;
+    font-weight: bold;
+    margin: 0 5px 10px 5px;
+    vertical-align: top;
 }
 
-.course-content ul.levels li.section .section_action_menu .textmenu,
-.course-content ul.levels li.section .section_action_menu .menu-action-text {
-    white-space: nowrap;
+#levelsectioncontainer.circle .levelsection {
+    border-radius: 100%;
+}
+
+#levelsectioncontainer .levelsection:hover {
+    background: #bac1c5;
+    color: #fff;
+}
+
+#levelsectioncontainer .levelsection.sectionhidden {
+    width: 53px;
+    height: 53px;
+    line-height: 50px;
+    border: 2px solid;
+    background: none;
+    cursor: default;
+    color: #b7bdc3;
+    border-color: #d3d9df;
+}
+
+#levelsectioncontainer .divisorsection {
+    display: inline-block;
+    padding: 0;
+    overflow-y: hidden;
+    height: 52px;
+    margin: 0 4px 10px 25px;
+}
+
+#levelsectioncontainer .divisortext {
+    display: table-cell;
+    vertical-align: middle;
+    padding: 0;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 18px;
+    overflow-y: hidden;
+    height: 52px;
+    text-align: right;
+    color: rgba(0, 0, 0, 0.6);
+}
+
+/* colors */
+
+#levelsectioncontainer .levelsection.current {
+    background: #115898;
+    color: #fff;
+}
+
+#levelsectioncontainer .levelsection.sectionvisible {
+    background: #1177d1;
+    color: #fff;
+    border-color: #1177d1;
+}
+
+#levelsectioncontainer .divisorsection.inlinelevelsections {
+    display: inline;
+}
+
+#levelsectioncontainer .divisorsection.inlinelevelsections::before {
+    content: "\A";
+    white-space: pre;
+}
+
+/* editing */
+
+.editing .course-content ul.levels li.section.main {
+    display: block;
 }
