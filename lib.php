@@ -256,20 +256,21 @@ class format_levels extends format_base
                 'default' => get_config('format_levels', 'sectiontype'),
                 'type' => PARAM_TEXT,
             );
-            $colorcurrent = get_config('format_levels', 'colorhighlight');
+
+            $colorhighlight = get_config('format_levels', 'colorhighlight');
+            if (!$colorhighlight) {
+                $colorhighlight = '';
+            }
+            $courseformatoptions['colorhighlight'] = array(
+                'default' => $colorhighlight,
+                'type' => PARAM_TEXT,
+            );
+            $colorcurrent = get_config('format_levels', 'colorcurrent');
             if (!$colorcurrent) {
                 $colorcurrent = '';
             }
-            $courseformatoptions['colorhighlight'] = array(
-                'default' => $colorcurrent,
-                'type' => PARAM_TEXT,
-            );
-            $colorvisible = get_config('format_levels', 'colorcurrent');
-            if (!$colorvisible) {
-                $colorvisible = '';
-            }
             $courseformatoptions['colorcurrent'] = array(
-                'default' => $colorvisible,
+                'default' => $colorcurrent,
                 'type' => PARAM_TEXT,
             );
         }
