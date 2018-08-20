@@ -29,7 +29,8 @@ require_once($CFG->dirroot . '/course/format/topics/renderer.php');
  * Basic renderer for levels format.
  *
  */
-class format_levels_renderer extends format_topics_renderer {
+class format_levels_renderer extends format_topics_renderer
+{
 
     /**
      * get_level_section
@@ -45,7 +46,7 @@ class format_levels_renderer extends format_topics_renderer {
             $color = str_replace('#', '', $course->{$name});
             $color = substr($color, 0, 6);
             if (preg_match('/^#?[a-f0-9]{6}$/i', $color)) {
-                $return = '#'.$color;
+                $return = '#' . $color;
             }
         }
         return $return;
@@ -55,25 +56,25 @@ class format_levels_renderer extends format_topics_renderer {
      * get_level_section
      *
      * @param stdclass $course
-     * @param string $sectionvisible
+     * @param string $activesection
      * @return string
      */
-    protected function get_level_section($course, $sectionvisible)
+    protected function get_level_section($course, $activesection)
     {
         global $PAGE;
         $html = '';
         $css = '';
-        if ($colorcurrent = $this->get_color_config($course, 'colorhighlight')) {
+        if ($colorhighlight = $this->get_color_config($course, 'colorhighlight')) {
             $css .=
                 '#levelsectioncontainer .levelsection.current {
-                background: ' . $colorcurrent . ';
+                background: ' . $colorhighlight . ';
             }
             ';
         }
-        if ($colorvisible = $this->get_color_config($course, 'colorcurrent')) {
+        if ($colorcurrent = $this->get_color_config($course, 'colorcurrent')) {
             $css .=
-                '#levelsectioncontainer .levelsection.sectionvisible {
-                background: ' . $colorvisible . ';
+                '#levelsectioncontainer .levelsection.activesection {
+                background: ' . $colorcurrent . ';
             }
             ';
         }
@@ -82,6 +83,9 @@ class format_levels_renderer extends format_topics_renderer {
         }
         $count = 1;
         $modinfo = get_fast_modinfo($course);
+        $html .= html_writer::tag('div', '', ['class' => 'connecting-line']);
+        $html .= html_writer::start_tag('div', ['class' => 'nav nav-tabs']);
+
         foreach ($modinfo->get_section_info_all() as $section => $thissection) {
             if ($section == 0) {
                 continue;
@@ -92,40 +96,50 @@ class format_levels_renderer extends format_topics_renderer {
             if ($course->hiddensections && !(int)$thissection->visible) {
                 continue;
             }
-            $id = 'levelsection-' . $section;
-            $name = $section;
-            if ($course->sectiontype == 'alphabet' && is_numeric($name)) {
-                $name = $this->number_to_alphabet($name);
-            }
-            if ($course->sectiontype == 'roman' && is_numeric($name)) {
-                $name = $this->number_to_roman($name);
-            }
-            $class = 'levelsection';
-            $onclick = 'M.format_levels.show(' . $section . ',' . $course->id . ')';
-            if (!$thissection->available &&
-                !empty($thissection->availableinfo)) {
-                $class .= ' sectionhidden';
-            } elseif (!$thissection->uservisible || !$thissection->visible) {
-                $class .= ' sectionhidden';
-                $onclick = false;
-            }
-            if ($course->marker == $section) {
-                $class .= ' current';
-            }
-            if ($sectionvisible == $section) {
-                $class .= ' sectionvisible';
-            }
-            if ($PAGE->user_is_editing()) {
-                $onclick = false;
-            }
-            $html .= html_writer::tag('div', $name, ['id' => $id, 'class' => $class, 'onclick' => $onclick]);
+            $html .= $this->get_circle_menu($section, $thissection, $course, $activesection, $PAGE->user_is_editing());
             $count++;
         }
-        $html = html_writer::tag('div', $html, ['id' => 'levelsectioncontainer', 'class' => 'circle']);
+
+        $html .= html_writer::end_tag('div');
+        $html = html_writer::tag('div', $html, ['class' => 'wizard-inner']);
+        $html = html_writer::tag('div', $html, ['class' => 'wizard']);
         if ($PAGE->user_is_editing()) { #when edit mode is ON
             $html .= html_writer::tag('div', get_string('editing', 'format_levels'), ['class' => 'alert alert-warning alert-block fade in']);
         }
         return $html;
+    }
+
+    private function get_circle_menu($section, $thissection, $course, $activesection, $editing)
+    {
+        $id = 'levelsection-' . $section;
+        $name = $section;
+        if ($course->sectiontype == 'alphabet' && is_numeric($name)) {
+            $name = $this->number_to_alphabet($name);
+        }
+        if ($course->sectiontype == 'roman' && is_numeric($name)) {
+            $name = $this->number_to_roman($name);
+        }
+        $class = 'levelsection';
+        $onclick = 'M.format_levels.show(' . $section . ',' . $course->id . ')';
+        if (!$thissection->available &&
+            !empty($thissection->availableinfo)) {
+            $class .= ' sectionhidden';
+        } elseif (!$thissection->uservisible || !$thissection->visible) {
+            $class .= ' sectionhidden';
+            $onclick = false;
+        }
+        if ($course->marker == $section) {
+            $class .= ' current';
+        }
+        if ($activesection == $section) {
+            $class .= ' active';
+        }
+        if ($editing) {
+            $onclick = false;
+        }
+        $html = html_writer::tag('span', $section, ['class' => 'round-tab']);
+
+        return  html_writer::tag('div', $html, ['class' => $class, 'title' => $name, 'onClick' => $onclick, 'id' => $id]);
     }
 
     /**
@@ -217,8 +231,8 @@ class format_levels_renderer extends format_topics_renderer {
                 $sectionstyle = ' current';
             }
         }
-        $o .= html_writer::start_tag('li', ['id' => 'section-'.$section->section,
-            'class' => 'section main clearfix'.$sectionstyle,
+        $o .= html_writer::start_tag('li', ['id' => 'section-' . $section->section,
+            'class' => 'section main clearfix' . $sectionstyle,
             'role' => 'region', 'aria-label' => get_section_name($course, $section)]);
         $o .= html_writer::tag('span', $this->section_title($section, $course), ['class' => 'hidden sectionname']);
         $leftcontent = $this->section_left_content($section, $course, $onsectionpage);
@@ -260,12 +274,12 @@ class format_levels_renderer extends format_topics_renderer {
         $course = course_get_format($course)->get_course();
         $context = context_course::instance($course->id);
         $completioninfo = new completion_info($course);
-        if (isset($_COOKIE['sectionvisible_'.$course->id])) {
-            $sectionvisible = $_COOKIE['sectionvisible_'.$course->id];
+        if (isset($_COOKIE['activesection_' . $course->id])) {
+            $activesection = $_COOKIE['activesection_' . $course->id];
         } elseif ($course->marker > 0) {
-            $sectionvisible = $course->marker;
+            $activesection = $course->marker;
         } else {
-            $sectionvisible = 1;
+            $activesection = 1;
         }
         $htmlsection = false;
         foreach ($modinfo->get_section_info_all() as $section => $thissection) {
@@ -311,7 +325,7 @@ class format_levels_renderer extends format_topics_renderer {
         if ($course->sectionposition == 0 and isset($htmlsection0)) {
             echo html_writer::tag('span', $htmlsection0, ['class' => 'above']);
         }
-        echo $this->get_level_section($course, $sectionvisible);
+        echo $this->get_level_section($course, $activesection);
         foreach ($htmlsection as $current) {
             echo $current;
         }
@@ -328,12 +342,14 @@ class format_levels_renderer extends format_topics_renderer {
                 echo $this->stealth_section_footer();
             }
             echo $this->end_section_list();
+
+
             echo html_writer::start_tag('div', ['id' => 'changenumsections', 'class' => 'mdl-right']);
             $straddsection = get_string('increasesections', 'moodle');
             $url = new moodle_url('/course/changenumsections.php', ['courseid' => $course->id,
                 'increase' => true, 'sesskey' => sesskey()]);
             $icon = $this->output->pix_icon('t/switch_plus', $straddsection);
-            echo html_writer::link($url, $icon.get_accesshide($straddsection), ['class' => 'increase-sections']);
+            echo html_writer::link($url, $icon . get_accesshide($straddsection), ['class' => 'increase-sections']);
             if ($course->numsections > 0) {
                 $strremovesection = get_string('reducesections', 'moodle');
                 $url = new moodle_url('/course/changenumsections.php', ['courseid' => $course->id,
@@ -341,17 +357,21 @@ class format_levels_renderer extends format_topics_renderer {
                 $icon = $this->output->pix_icon('t/switch_minus', $strremovesection);
                 echo html_writer::link(
                     $url,
-                    $icon.get_accesshide($strremovesection),
+                    $icon . get_accesshide($strremovesection),
                     ['class' => 'reduce-sections']
                 );
             }
             echo html_writer::end_tag('div');
+
+
         } else {
             echo $this->end_section_list();
         }
-        echo html_writer::tag('style', '.course-content ul.levels #section-' . $sectionvisible . ' { display: block; }');
+        echo html_writer::tag('style', '.course-content ul.levels #section-' . $activesection . ' { display: block; }');
         if (!$PAGE->user_is_editing()) {
             $PAGE->requires->js_init_call('M.format_levels.init', [$course->numsections]);
         }
     }
+
+
 }

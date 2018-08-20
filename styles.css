@@ -45,93 +45,167 @@
     margin: 1em 0;
 }
 
+div.current::before{
+    border-left: none;
+}
+
 #levelsectioncontainer {
     display: none;
     margin: 20px auto;
 }
-
-#levelsectioncontainer .levelsection {
-    background: #dee3e8;
-    color: #7a8188;
-    display: inline-block;
-    text-align: center;
-    width: 52px;
-    line-height: 52px;
-    height: 52px;
-    overflow: hidden;
-    cursor: pointer;
-    font-size: 22px;
-    padding: 0;
-    font-weight: bold;
-    margin: 0 5px 10px 5px;
-    vertical-align: top;
-}
-
-#levelsectioncontainer.circle .levelsection {
-    border-radius: 100%;
-}
-
-#levelsectioncontainer .levelsection:hover {
-    background: #bac1c5;
-    color: #fff;
-}
-
-#levelsectioncontainer .levelsection.sectionhidden {
-    width: 53px;
-    height: 53px;
-    line-height: 50px;
-    border: 2px solid;
-    background: none;
-    cursor: default;
-    color: #b7bdc3;
-    border-color: #d3d9df;
-}
-
-#levelsectioncontainer .divisorsection {
-    display: inline-block;
-    padding: 0;
-    overflow-y: hidden;
-    height: 52px;
-    margin: 0 4px 10px 25px;
-}
-
-#levelsectioncontainer .divisortext {
-    display: table-cell;
-    vertical-align: middle;
-    padding: 0;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 18px;
-    overflow-y: hidden;
-    height: 52px;
-    text-align: right;
-    color: rgba(0, 0, 0, 0.6);
-}
-
-/* colors */
+ /*colors*/
 
 #levelsectioncontainer .levelsection.current {
     background: #115898;
     color: #fff;
 }
 
-#levelsectioncontainer .levelsection.sectionvisible {
+#levelsectioncontainer .levelsection.activesection {
     background: #1177d1;
     color: #fff;
     border-color: #1177d1;
 }
-
-#levelsectioncontainer .divisorsection.inlinelevelsections {
-    display: inline;
-}
-
-#levelsectioncontainer .divisorsection.inlinelevelsections::before {
-    content: "\A";
-    white-space: pre;
-}
-
-/* editing */
+ /*editing*/
 
 .editing .course-content ul.levels li.section.main {
     display: block;
+}
+
+/*wizard css*/
+.wizard {
+    margin: 20px auto;
+    background: #fff;
+}
+
+.wizard .nav-tabs {
+    position: relative;
+    margin: 40px auto;
+    margin-bottom: 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.wizard > div.wizard-inner {
+    position: relative;
+}
+
+.connecting-line {
+    height: 2px;
+    background: #e0e0e0;
+    position: absolute;
+    width: 80%;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    top: 50%;
+    z-index: 1;
+}
+
+.wizard .nav-tabs > div.activesection, .wizard .nav-tabs > div.activesection:hover, .wizard .nav-tabs > div.activesection:focus {
+    color: #555555;
+    cursor: default;
+    border: 0;
+    border-bottom-color: transparent;
+}
+
+span.round-tab {
+    width: 70px;
+    height: 70px;
+    line-height: 70px;
+    display: inline-block;
+    border-radius: 100px;
+    background: #fff;
+    z-index: 2;
+    position: absolute;
+    border: 2px solid #555;
+    left: 0;
+    text-align: center;
+    font-size: 25px;
+}
+
+div.sectionhidden span.round-tab {
+    border: 2px solid #e0e0e0;
+}
+
+div.current span.round-tab {
+    border: 2px solid #1177d1;
+}
+
+.wizard div.activesection span.round-tab {
+    background: #fff;
+    border: 2px solid #5bc0de;
+    color: #5bc0de;
+
+}
+.wizard div.activesection span.round-tab{
+    color: #5bc0de;
+}
+
+span.round-tab:hover {
+    color: #333;
+    border: 2px solid #333;
+}
+
+.wizard .nav-tabs > div {
+    width: 25%;
+    float: left;
+    margin-bottom: -1px;
+    background-color: white;
+    position: relative;
+    display: block;
+    cursor: pointer;
+}
+
+.wizard div:after {
+    content: " ";
+    position: absolute;
+    left: 46%;
+    opacity: 0;
+    margin: -21px -7px;
+    bottom: 0px;
+    border: 5px solid transparent;
+    border-bottom-color: #5bc0de;
+    transition: 0.1s ease-in-out;
+}
+
+.wizard div.activesection:after {
+    content: " ";
+    position: absolute;
+    left: 46%;
+    opacity: 1;
+    margin: -21px -7px;
+    bottom: 0px;
+    border: 10px solid transparent;
+    border-bottom-color: #5bc0de;
+}
+
+.wizard .nav-tabs > div{
+    width: 70px;
+    height: 70px;
+    margin: 20px auto;
+    border-radius: 100%;
+    padding: 0;
+    position: relative;
+    display: block;
+    line-height: 1.42857143;
+    color:#555555;
+}
+
+.wizard .nav-tabs > div:hover {
+    background: transparent;
+}
+
+.wizard .tab-pane {
+    position: relative;
+    padding-top: 50px;
+}
+
+.wizard h3 {
+    margin-top: 0;
+}
+
+/* .bootstrap.min.css */
+
+.wizard .nav {
+    padding-left: 0;
+    list-style: none;
 }

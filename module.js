@@ -34,7 +34,7 @@ M.format_levels.hide = function() {
     for (var i = 1; i <= this.numsections; i++) {
         if (document.getElementById('levelsection-' + i) != undefined) {
             var levelsection = document.getElementById('levelsection-' + i);
-            levelsection.setAttribute('class', levelsection.getAttribute('class').replace('sectionvisible', ''));
+            levelsection.setAttribute('class', levelsection.getAttribute('class').replace('activesection', ''));
             document.getElementById('section-' + i).style.display = 'none';
         }
     }
@@ -44,9 +44,9 @@ M.format_levels.show = function(id, courseid) {
     this.hide();
     var levelsection = document.getElementById('levelsection-' + id);
     var currentsection = document.getElementById('section-' + id);
-    levelsection.setAttribute('class', levelsection.getAttribute('class') + ' sectionvisible');
+    levelsection.setAttribute('class', levelsection.getAttribute('class') + ' activesection');
     currentsection.style.display = 'block';
-    document.cookie = 'sectionvisible_' + courseid + '=' + id + '; path=/';
+    document.cookie = 'activesection_' + courseid + '=' + id + '; path=/';
     M.format_levels.h5p();
 };
 
