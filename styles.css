@@ -45,26 +45,41 @@
     margin: 1em 0;
 }
 
-div.current::before{
-    border-left: none;
+.course-content .current::before{
+    border-left: none !important;
 }
 
 #levelsectioncontainer {
     display: none;
     margin: 20px auto;
 }
- /*colors*/
+ /*colors start*/
 
-#levelsectioncontainer .levelsection.current {
-    background: #115898;
-    color: #fff;
+div.sectionhidden span.round-tab {
+    color: #e0e0e0;
 }
 
-#levelsectioncontainer .levelsection.activesection {
-    background: #1177d1;
-    color: #fff;
+.wizard div.current span.round-tab {
+    color: #1177d1;
     border-color: #1177d1;
 }
+
+.wizard div.activesection span.round-tab {
+    background: #fff;
+    border: 2px solid #5bc0de;
+    color: #5bc0de;
+}
+
+span.round-tab:hover {
+    color: #555555;
+    border: 2px solid #555555;
+}
+
+div.sectionhidden span.round-tab:hover {
+    border: 2px solid #e0e0e0;
+}
+ /*colors end*/
+
  /*editing*/
 
 .editing .course-content ul.levels li.section.main {
@@ -74,7 +89,7 @@ div.current::before{
 /*wizard css*/
 .wizard {
     margin: 20px auto;
-    background: #fff;
+    /*background: #fff;*/
 }
 
 .wizard .nav-tabs {
@@ -116,33 +131,10 @@ span.round-tab {
     background: #fff;
     z-index: 2;
     position: absolute;
-    border: 2px solid #555;
+    border: 2px solid #e0e0e0;
     left: 0;
     text-align: center;
     font-size: 25px;
-}
-
-div.sectionhidden span.round-tab {
-    border: 2px solid #e0e0e0;
-}
-
-div.current span.round-tab {
-    border: 2px solid #1177d1;
-}
-
-.wizard div.activesection span.round-tab {
-    background: #fff;
-    border: 2px solid #5bc0de;
-    color: #5bc0de;
-
-}
-.wizard div.activesection span.round-tab{
-    color: #5bc0de;
-}
-
-span.round-tab:hover {
-    color: #333;
-    border: 2px solid #333;
 }
 
 .wizard .nav-tabs > div {
