@@ -137,7 +137,7 @@ class format_levels_renderer extends format_topics_renderer
         if ($editing) {
             $onclick = false;
         }
-        $html = html_writer::tag('span', $section, ['class' => 'round-tab']);
+        $html = html_writer::tag('span', $name, ['class' => 'round-tab']);
 
         return  html_writer::tag('div', $html, ['class' => $class, 'title' => $name, 'onClick' => $onclick, 'id' => $id]);
     }
