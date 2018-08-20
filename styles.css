@@ -45,6 +45,10 @@
     margin: 1em 0;
 }
 
+div.current::before{
+    border-left: none;
+}
+
 #levelsectioncontainer {
     display: none;
     margin: 20px auto;
@@ -110,12 +114,20 @@ span.round-tab {
     display: inline-block;
     border-radius: 100px;
     background: #fff;
-    border: 2px solid #e0e0e0;
     z-index: 2;
     position: absolute;
+    border: 2px solid #555;
     left: 0;
     text-align: center;
     font-size: 25px;
+}
+
+div.sectionhidden span.round-tab {
+    border: 2px solid #e0e0e0;
+}
+
+div.current span.round-tab {
+    border: 2px solid #1177d1;
 }
 
 .wizard div.activesection span.round-tab {
@@ -160,7 +172,7 @@ span.round-tab:hover {
     position: absolute;
     left: 46%;
     opacity: 1;
-    margin: 0 auto;
+    margin: -21px -7px;
     bottom: 0px;
     border: 10px solid transparent;
     border-bottom-color: #5bc0de;
