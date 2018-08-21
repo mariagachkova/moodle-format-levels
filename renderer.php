@@ -63,24 +63,7 @@ class format_levels_renderer extends format_topics_renderer
     {
         global $PAGE;
         $html = '';
-        $css = '';
-        if ($colorhighlight = $this->get_color_config($course, 'colorhighlight')) {
-            $css .=
-                '#levelsectioncontainer .levelsection.current {
-                background: ' . $colorhighlight . ';
-            }
-            ';
-        }
-        if ($colorcurrent = $this->get_color_config($course, 'colorcurrent')) {
-            $css .=
-                '#levelsectioncontainer .levelsection.activesection {
-                background: ' . $colorcurrent . ';
-            }
-            ';
-        }
-        if ($css) {
-            $html .= html_writer::tag('style', $css);
-        }
+        $html .= $this->set_additional_css($course);
         $count = 1;
         $modinfo = get_fast_modinfo($course);
         $html .= html_writer::tag('div', '', ['class' => 'connecting-line']);
@@ -109,6 +92,45 @@ class format_levels_renderer extends format_topics_renderer
         return $html;
     }
 
+    /**
+     * @param $course
+     * @return string
+     */
+    protected function set_additional_css($course){
+        $css = '';
+        if ($colorhighlight = $this->get_color_config($course, 'colorhighlight')) {
+            $css .=
+                '.wizard div.current span.round-tab {
+                color: ' . $colorhighlight . ';
+                border-color:' . $colorhighlight . ';
+            }
+            ';
+        }
+        if ($colorcurrent = $this->get_color_config($course, 'colorcurrent')) {
+            $css .=
+                '.wizard div.activesection span.round-tab {
+                 border: 2px solid ' . $colorcurrent . ';
+                color: ' . $colorcurrent . ';
+            }
+            .wizard div.activesection:after {
+            border-bottom-color: ' . $colorcurrent . ';
+            }
+            ';
+        }
+        if ($css) {
+            return html_writer::tag('style', $css);
+        }
+        return '';
+    }
+
+    /**
+     * @param $section
+     * @param $thissection
+     * @param $course
+     * @param $activesection
+     * @param $editing
+     * @return mixed
+     */
     private function get_circle_menu($section, $thissection, $course, $activesection, $editing)
     {
         $id = 'levelsection-' . $section;
@@ -139,7 +161,7 @@ class format_levels_renderer extends format_topics_renderer
         }
         $html = html_writer::tag('span', $name, ['class' => 'round-tab']);
 
-        return  html_writer::tag('div', $html, ['class' => $class, 'title' => $name, 'onClick' => $onclick, 'id' => $id]);
+        return  html_writer::tag('div', $html, ['class' => $class, 'title' => get_section_name($course, $section), 'onClick' => $onclick, 'id' => $id]);
     }
 
     /**
