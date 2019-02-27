@@ -72,13 +72,6 @@ class restore_format_levels_plugin extends restore_format_plugin {
     }
 
     /**
-     * Dummy process method
-     */
-    public function process_dummy_course() {
-
-    }
-
-    /**
      * Executed after course restore is complete
      *
      * This method is only executed if course configuration was overridden
