@@ -59,3 +59,7 @@ $string['sectiontype'] = 'List style';
 $string['numeric'] = 'Numeric';
 $string['roman'] = 'Roman numerals';
 $string['alphabet'] = 'Alphabet';
+
+//Game template suggestions
+$string['game_template_header'] = 'What can we use to build game elements?';
+$string['game_template_description'] = 'Here you can use some suggestions for design and develop more game likely courses in Moodle';

@@ -32,6 +32,18 @@ require_once($CFG->dirroot . '/course/format/topics/renderer.php');
 class format_levels_renderer extends format_topics_renderer
 {
 
+    /** @todo add multi language support */
+    const GAME_SUGGESTIONS = [
+        'Story/History' => 'Label, Page, File',
+        'Game Rules' => 'Label, Page, File',
+        'Challenge' => 'Page, File, Folder, URL, Book, Lesson, Assignment, Choice, Quiz, Glossary, Workshop, Wiki, Database, Forum, Chat, External tool, Survey',
+        'Hidden Treasure' => 'Page, File, Folder, URL, Book, Lesson, Glossary, Forum, External tool',
+        'Reward' => 'Page, File, Folder, URL, Book, Lesson, Glossary, Forum, External tool',
+        'Combo' => 'Label, Page, File, Folder, Glossary, Database, Book, Lesson, Chat, External tool',
+        'Badge' => 'Badge',
+        'Socializing' => 'Forum, Chat',
+    ];
+
     /**
      * get_level_section
      *
@@ -96,7 +108,8 @@ class format_levels_renderer extends format_topics_renderer
      * @param $course
      * @return string
      */
-    protected function set_additional_css($course){
+    protected function set_additional_css($course)
+    {
         $css = '';
         if ($colorhighlight = $this->get_color_config($course, 'colorhighlight')) {
             $css .=
@@ -161,7 +174,7 @@ class format_levels_renderer extends format_topics_renderer
         }
         $html = html_writer::tag('span', $name, ['class' => 'round-tab']);
 
-        return  html_writer::tag('div', $html, ['class' => $class, 'title' => get_section_name($course, $section), 'onClick' => $onclick, 'id' => $id]);
+        return html_writer::tag('div', $html, ['class' => $class, 'title' => get_section_name($course, $section), 'onClick' => $onclick, 'id' => $id]);
     }
 
     /**
@@ -331,6 +344,7 @@ class format_levels_renderer extends format_topics_renderer
             if ($thissection->uservisible) {
                 $htmlsection[$section] .= $this->courserenderer->course_section_cm_list($course, $thissection, 0);
                 $htmlsection[$section] .= $this->courserenderer->course_section_add_cm_control($course, $section, 0);
+                $htmlsection[$section] .= $this->game_template_suggestions($course, $section, 0);
             }
             $htmlsection[$section] .= $this->section_footer();
         }
@@ -395,5 +409,37 @@ class format_levels_renderer extends format_topics_renderer
         }
     }
 
+    protected function game_template_suggestions($course, $section, $sectionreturn = null, $displayoptions = array())
+    {
+        // check to see if user can add menus and there are modules to add
+        if (!has_capability('moodle/course:manageactivities', context_course::instance($course->id))
+            || !$this->page->user_is_editing()
+            || !($modnames = get_module_types_names()) || empty($modnames)) {
+            return '';
+        }
 
+        $html = html_writer::start_tag('div', ['class' => 'alert alert-secondary', 'role' => 'alert']);
+        $html .= html_writer::tag('button', html_writer::tag('span', '&times;', ['aria-hidden' => true]), [
+            'type' => 'button',
+            'class' => 'close',
+            'data-dismiss' => 'alert',
+            'aria-label' => 'Close',
+        ]);
+        $html .= html_writer::tag('h4', get_string('game_template_header', 'format_levels'), ['class' => 'alert-heading']);
+        $html .= html_writer::tag('p', get_string('game_template_description', 'format_levels'));
+        $html .= '<hr>';
+
+        $html .= html_writer::start_tag('ul', ['class' => 'list-group']);
+        foreach (self::GAME_SUGGESTIONS as $game_element => $moodle_element) {
+            $html .= html_writer::start_tag('li', ['class' => 'list-group-item']);
+            $html .= html_writer::tag('strong', $game_element, []) . ' - ' . $moodle_element;
+            $html .= html_writer::end_tag('li');
+        }
+        $html .= html_writer::end_tag('ul');
+
+        $html .= html_writer::end_tag('div');
+
+        return $html;
+
+    }
 }
