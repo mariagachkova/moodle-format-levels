@@ -24,13 +24,15 @@ M.format_levels = M.format_levels || {
     numsections: 0
 };
 
-M.format_levels.init = function(Y, numsections) {
+M.format_levels.init = function (Y, numsections) {
     this.ourYUI = Y;
     this.numsections = parseInt(numsections);
-    document.getElementById('levelsectioncontainer').style.display = 'table';
+    if (document.getElementById('levelsectioncontainer')) {
+        document.getElementById('levelsectioncontainer').style.display = 'table';
+    }
 };
 
-M.format_levels.hide = function() {
+M.format_levels.hide = function () {
     for (var i = 1; i <= this.numsections; i++) {
         if (document.getElementById('levelsection-' + i) != undefined) {
             var levelsection = document.getElementById('levelsection-' + i);
@@ -40,7 +42,7 @@ M.format_levels.hide = function() {
     }
 };
 
-M.format_levels.show = function(id, courseid) {
+M.format_levels.show = function (id, courseid) {
     this.hide();
     var levelsection = document.getElementById('levelsection-' + id);
     var currentsection = document.getElementById('section-' + id);
@@ -50,7 +52,7 @@ M.format_levels.show = function(id, courseid) {
     M.format_levels.h5p();
 };
 
-M.format_levels.h5p = function() {
+M.format_levels.h5p = function () {
     window.h5pResizerInitialized = false;
     var iframes = document.getElementsByTagName('iframe');
     var ready = {

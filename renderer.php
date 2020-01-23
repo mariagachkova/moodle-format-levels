@@ -99,7 +99,7 @@ class format_levels_renderer extends format_topics_renderer
         $html = html_writer::tag('div', $html, ['class' => 'wizard-inner']);
         $html = html_writer::tag('div', $html, ['class' => 'wizard']);
         if ($PAGE->user_is_editing()) { #when edit mode is ON
-            $html .= html_writer::tag('div', get_string('editing', 'format_levels'), ['class' => 'alert alert-warning alert-block fade in']);
+            $html .= html_writer::tag('div', get_string('editing', 'format_levels'), ['class' => 'alert alert-info alert-block fade in']);
         }
         return $html;
     }
